@@ -22,14 +22,14 @@ batch_size = 16
 epochs = 200
 
 #Train
-dataframe = pd.read_csv('/home/yupaporn/codes/USAI/Traindf_fold1.csv') #แก้ data เปลี่ยนตาม fold
-base_dir = '/media/tohn/SSD/Images/Image1' #เปลี่ยนตาม fold
+dataframe = pd.read_csv('/home/yupaporn/codes/USAI/Traindf_set1.csv') #แก้ data เปลี่ยนตาม fold
+base_dir = '/media/tohn/HDD/VISION_dataset/USAI/dataset1/' #เปลี่ยนตาม fold
 os.chdir(base_dir)
 train_dir = os.path.join(base_dir, 'train')
 
 #validation
-valframe = pd.read_csv( '/home/yupaporn/codes/USAI/Validationdf_fold1.csv') #เปลี่ยนตาม fold
-validation_dir = os.path.join(base_dir, 'validation')
+valframe = pd.read_csv( '/home/yupaporn/codes/USAI/Testdf_set1.csv') #เปลี่ยนตาม fold
+validation_dir = os.path.join(base_dir, 'test')
 
 from efficientnet.keras import EfficientNetB7 as Net
 from efficientnet.keras import center_crop_and_resize, preprocess_input
@@ -44,7 +44,7 @@ conv_base = Net(weights='imagenet', include_top=False, input_shape=input_shape)
 x = conv_base.output  
 global_average_layer = layers.GlobalAveragePooling2D(name = 'head_pooling')(x)
 dropout_layer_1 = layers.Dropout(0.50,name = 'head_dropout')(global_average_layer)
-prediction_layer = layers.Dense(2, activation='softmax',name = 'prediction_layer')(dropout_layer_1)
+prediction_layer = layers.Dense(15, activation='softmax',name = 'prediction_layer')(dropout_layer_1)
 
 model = models.Model(inputs= conv_base.input, outputs=prediction_layer) 
 model.summary()
@@ -76,8 +76,8 @@ test_datagen = ImageDataGenerator(rescale=1./255)
 train_generator = train_datagen.flow_from_dataframe(
         dataframe = dataframe,
         directory = train_dir,
-        x_col = 'filename',
-        y_col = 'Class',
+        x_col = 'FileName',
+        y_col = 'Sub_class',
         target_size = (height, width),
         batch_size=batch_size,
         color_mode= 'rgb',
@@ -85,8 +85,8 @@ train_generator = train_datagen.flow_from_dataframe(
 test_generator = test_datagen.flow_from_dataframe(
         dataframe = valframe,
         directory = validation_dir,
-        x_col = 'filename',
-        y_col = 'Class',
+        x_col = 'FileName',
+        y_col = 'Sub_class',
         target_size = (height, width),
         batch_size=batch_size,
         color_mode= 'rgb',
