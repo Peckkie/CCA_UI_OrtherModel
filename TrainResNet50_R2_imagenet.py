@@ -12,15 +12,14 @@ import matplotlib.pyplot as plt
 import os
 from tensorflow.keras import callbacks
 import pandas as pd
-from keras.utils import generic_utils
 
-#os.environ["CUDA_VISIBLE_DEVICES"]="1"
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-batch_size = 6
-epochs = 400
+batch_size = 16
+epochs = 200
 
 #Train
 dataframe = pd.read_csv('/home/yupaporn/codes/USAI/Traindf_set1.csv') #แก้ data เปลี่ยนตาม fold
@@ -38,7 +37,7 @@ import efficientnet.tfkeras
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 
-model_dir = '/media/tohn/SSD/Orther_model/R1/models/EffNet_B7R1.h5'
+model_dir = '/media/tohn/SSD/Orther_model/R1/models/EffNet_ResNet50R1.h5'
 model = load_model(model_dir)
 height = width = model.input_shape[1]
 
@@ -78,7 +77,7 @@ test_generator = test_datagen.flow_from_dataframe(
 
 os.chdir('/media/tohn/SSD/Orther_model/R2')
 
-root_logdir = '/media/tohn/SSD/Orther_model/R2/my_logs_B7R2'
+root_logdir = '/media/tohn/SSD/Orther_model/R2/my_logs_EffNet_ResNet50R2'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
@@ -128,4 +127,4 @@ history = model.fit_generator(
       validation_steps= len(valframe) //batch_size,
       callbacks = [tensorboard_cb])
 
-model.save('./models/EffNet_B7R2.h5')
+model.save('./models/EffNet_ResNet50R2.h5')
