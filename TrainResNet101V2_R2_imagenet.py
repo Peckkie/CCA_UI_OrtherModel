@@ -101,14 +101,14 @@ def avoid_error(gen):
 model.trainable = True
 set_trainable = False
 for layer in model.layers:
-    if layer.name == 'block5a_se_excite':
+    if layer.name == 'conv2_block1_1_conv':
         set_trainable = True
     if set_trainable:
         layer.trainable = True
     else:
         layer.trainable = False
 print('This is the number of trainable layers '
-      'after freezing the conv base:', len(model.trainable_weights))  
+      'after freezing the conv base:', len(model.trainable_weights)) 
 
 model.compile(loss='categorical_crossentropy',
               optimizer=optimizers.RMSprop(lr=2e-5),

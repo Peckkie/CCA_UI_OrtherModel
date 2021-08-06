@@ -101,7 +101,7 @@ def avoid_error(gen):
 model.trainable = True
 set_trainable = False
 for layer in model.layers:
-    if layer.name == 'block5a_se_excite':
+    if layer.name == 'normal_concat_13':
         set_trainable = True
     if set_trainable:
         layer.trainable = True
