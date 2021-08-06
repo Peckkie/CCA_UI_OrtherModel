@@ -101,7 +101,7 @@ def avoid_error(gen):
 model.trainable = True
 set_trainable = False
 for layer in model.layers:
-    if layer.name == 'conv2_block1_1_conv':
+    if layer.name == 'conv3_block1_1_conv':
         set_trainable = True
     if set_trainable:
         layer.trainable = True
