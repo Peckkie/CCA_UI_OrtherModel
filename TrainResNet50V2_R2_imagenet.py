@@ -99,14 +99,14 @@ def avoid_error(gen):
 
 #Unfreez
 model.trainable = True
-set_trainable = False
+set_trainable = True
 for layer in model.layers:
     if layer.name == 'block5a_se_excite':
         set_trainable = True
     if set_trainable:
         layer.trainable = True
     else:
-        layer.trainable = False
+        layer.trainable = True
 print('This is the number of trainable layers '
       'after freezing the conv base:', len(model.trainable_weights))  
 
